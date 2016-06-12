@@ -61,7 +61,6 @@ import _ from 'underscore';
     console.log('İçeride ilan yok!');
   }
   let detailesArray = [];
-  let count = 0;
   for (let page of pagesArray.pages) {
     let data = await doScrape(page.url, detailedString);
     // console.log(data);
@@ -71,8 +70,6 @@ import _ from 'underscore';
       content:data,
       distance: distanceB,
     });
-    count++;
-    if (count == 2) { break; }
   }
 
   _.sortBy(detailesArray, 'distance');
