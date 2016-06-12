@@ -2,6 +2,7 @@ import { doUrl } from './modules/Url';
 import { reverse } from './modules/ReverseGeocoding';
 import { doScrape } from './modules/Scrape';
 import { distance } from './modules/Distance';
+import _ from 'underscore';
 
 
 // https://www.sahibinden.com/emlak-konut?pagingSize=0&query_text=Çamlaraltı
@@ -59,10 +60,22 @@ import { distance } from './modules/Distance';
   if (pagesArray.pages.length === 0) {
     console.log('İçeride ilan yok!');
   }
+  let detailesArray = [];
+  let count = 0;
   for (let page of pagesArray.pages) {
     let data = await doScrape(page.url, detailedString);
     // console.log(data);
     let distanceB = await distance(data.lat, data.lon, lat, lon, 'K');
-    console.log(distanceB);
+    // console.log(distanceB);
+    detailesArray.push({
+      content:data,
+      distance: distanceB,
+    });
+    count++;
+    if (count == 2) { break; }
   }
+
+  _.sortBy(detailesArray, 'distance');
+
+  console.log(detailesArray);
 })();
