@@ -4,8 +4,7 @@
   "description": "Simple sahibinden.com bot",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js",
-    "start": "nodemon --exec babel-node test.js"
+    "start": "nodemon --exec babel-node index.js"
   },
   "author": "Cagatay Cali",
   "license": "ISC",
@@ -23,8 +22,8 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.9.1",
-    "jsdom": "^9.2.1",
     "nodemon": "^1.9.2",
+    "request": "^2.72.0",
     "scrape-it": "^3.1.1"
   }
 }
