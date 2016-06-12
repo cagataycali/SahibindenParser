@@ -72,7 +72,5 @@ import _ from 'underscore';
     });
   }
 
-  _.sortBy(detailesArray, 'distance');
-
-  console.log(detailesArray);
+  console.log(_.sortBy(detailesArray, 'distance'));
 })();

@@ -79,7 +79,6 @@ router.get('/', async(req, res) => {
     res.status(403).json('İçeride ilan yok! ');
   }
   let detailesArray = [];
-  let count = 0;
   for (let page of pagesArray.pages) {
     await sleep(10000);
     let data = await doScrape(page.url, detailedString);
@@ -94,8 +93,6 @@ router.get('/', async(req, res) => {
       content:data,
       distance: distanceB,
     });
-    count++;
-    if (count === 2) { break; }
   }
 
   res.json(_.sortBy(detailesArray, 'distance'));
