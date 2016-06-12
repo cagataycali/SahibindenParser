@@ -1,43 +1,16 @@
-import scrapeIt from 'scrape-it';
-import request from 'request';
+import { doUrl } from './modules/Url';
+import { reverse } from './modules/ReverseGeocoding';
+import { doScrape } from './modules/ReverseGeocoding';
 
-function doScrape(uri, string) {
-  return new Promise((resolve) => {
-    scrapeIt('https://www.sahibinden.com'+uri, string).then(pages => {
-      resolve(pages);
-    });
-  });
-}
-
-async function doRequest(lat, lon) {
-  return new Promise((resolve) => {
-    request(`http://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}`, (err2, response, body) => {
-      const content = JSON.parse(body);
-      resolve(content);
-    });
-  });
-}
-
-async function doUrl(param1, param2, param3) {
-  return new Promise((resolve) => {
-    let params = `${param1}+${param2}+${param3}`;
-    resolve(params);
-  });
-}
-
-
-// https://www.sahibinden.com/emlak-konut?pagingSize=0&query_text=Çamlaraltı
 
 (async function getPages() {
   const lat = 37.9158;
   const lon = 29.1202;
-  const location = await doRequest(lat, lon);
-  let url = await doUrl(location.results[0].address_components[4].short_name,location.results[0].address_components[2].short_name,location.results[0].address_components[1].short_name);
-  const room = '2+2'.split('+');
-  const roomParam = room[0] + "%2B" + room[1];
-  url += "+"+roomParam;
-  const listUrl = '/emlak-konut?query_text=' + url;
-  console.log(listUrl);
+  const location = await reverse(lat, lon);
+
+  const room = '2+2';
+  let url = await doUrl(location.results[0].address_components[4].short_name,location.results[0].address_components[2].short_name,location.results[0].address_components[1].short_name, room);
+  console.log(url);
   process.exit(1);
   const list = {
     pages: {
