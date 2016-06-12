@@ -28,3 +28,23 @@ build/Release
 # Dependency directory
 # https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
 node_modules
+
+server/logs
+server/*.log
+server/npm-debug.log*
+
+server/pids
+server/*.pid
+server/*.seed
+
+server/lib-cov
+
+server/coverage
+
+server/.grunt
+
+server/.lock-wscript
+
+server/build/Release
+
+server/node_modules
