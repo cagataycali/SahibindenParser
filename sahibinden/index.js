@@ -1,17 +1,15 @@
 import { doUrl } from './modules/Url';
 import { reverse } from './modules/ReverseGeocoding';
-import { doScrape } from './modules/ReverseGeocoding';
+import { doScrape } from './modules/Scrape';
+import { distance } from './modules/Distance';
 
 
-(async function getPages() {
-  const lat = 37.9158;
-  const lon = 29.1202;
+// https://www.sahibinden.com/emlak-konut?pagingSize=0&query_text=Çamlaraltı
+
+(async function getPages(lat = 37.9158, lon = 29.1202, room = '2+2') {
   const location = await reverse(lat, lon);
-
-  const room = '2+2';
   let url = await doUrl(location.results[0].address_components[4].short_name,location.results[0].address_components[2].short_name,location.results[0].address_components[1].short_name, room);
   console.log(url);
-  process.exit(1);
   const list = {
     pages: {
       listItem: '.searchResultsItem > td.searchResultsTitleValue',
@@ -57,11 +55,14 @@ import { doScrape } from './modules/ReverseGeocoding';
     },
   };
 
-  const listUri = '/emlak-konut?query_text=denizli+emlak';
-
-  let pagesArray = await doScrape(listUri, list);
+  let pagesArray = await doScrape(url, list);
+  if (pagesArray.pages.length === 0) {
+    console.log('İçeride ilan yok!');
+  }
   for (let page of pagesArray.pages) {
     let data = await doScrape(page.url, detailedString);
-    console.log(data);
+    // console.log(data);
+    let distanceB = await distance(data.lat, data.lon, lat, lon, 'K');
+    console.log(distanceB);
   }
 })();
